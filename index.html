@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>OG Fortnite — Chapter 2 Season 2</title>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Orbitron:wght@600&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --panel-bg: rgba(255,255,255,0.06);
+      --panel-border: rgba(255,255,255,0.14);
+      --accent: linear-gradient(90deg,#7ee8fa,#80ff72);
+      --glass-radius: 18px;
+    }
+
+    *{box-sizing:border-box;margin:0;padding:0}
+    html,body{height:100%}
+    body{
+      font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      color: #eef6ff;
+      background: radial-gradient(ellipse at 10% 10%, #0b1220 0%, #071024 35%, #02101a 100%);
+      overflow-y:auto;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+    }
+
+    canvas#snow {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      pointer-events: none;
+      display:block;
+    }
+
+    .wrap {
+      position: relative;
+      z-index: 1;
+      max-width:1100px;
+      margin: 48px auto;
+      padding: 28px;
+      display: grid;
+      gap:24px;
+      grid-template-columns: 1fr;
+    }
+
+    header {
+      display:flex;
+      gap:18px;
+      align-items:center;
+      background: var(--panel-bg);
+      border: 1px solid var(--panel-border);
+      border-radius: var(--glass-radius);
+      padding:16px;
+      backdrop-filter: blur(8px) saturate(1.2);
+      box-shadow: 0 6px 30px rgba(2,8,20,0.6);
+    }
+
+    .logo {
+      width:86px;
+      height:86px;
+      border-radius:12px;
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.035));
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-family: "Orbitron", sans-serif;
+      font-size:20px;
+      color:#dffcff;
+      border: 1px solid rgba(255,255,255,0.06);
+      overflow:hidden;
+      flex-shrink:0;
+    }
+
+    header .title { display:flex; flex-direction:column; }
+
+    header h1 {
+      font-size:20px;
+      letter-spacing:0.6px;
+      margin-bottom:4px;
+      font-weight:700;
+    }
+
+    header .sub {
+      color: #cfeeff;
+      opacity:0.85;
+      font-size:13px;
+    }
+
+    .main {
+      display:grid;
+      grid-template-columns: 1fr 420px;
+      gap:20px;
+    }
+
+    .info {
+      background: var(--panel-bg);
+      border: 1px solid var(--panel-border);
+      border-radius: 16px;
+      padding:18px;
+      backdrop-filter: blur(8px);
+    }
+
+    .info .section { margin-bottom:14px; }
+    .info h2 { font-size:16px; margin-bottom:8px; font-weight:600; }
+    .info p {
+      color:#e6f7ff;
+      opacity:0.9;
+      line-height:1.45;
+      font-size:14px;
+    }
+
+    .actions {
+      display:flex;
+      gap:10px;
+      margin-top:12px;
+      flex-wrap:wrap;
+    }
+
+    .btn {
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:10px 14px;
+      border-radius:12px;
+      font-weight:600;
+      font-size:14px;
+      cursor:pointer;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: rgba(255,255,255,0.03);
+      text-decoration:none;
+      color: #e9fbff;
+      transition: transform .12s ease, box-shadow .12s ease;
+    }
+    .btn:hover{ transform: translateY(-3px); box-shadow: 0 10px 30px rgba(0,0,0,0.45); }
+
+    .btn.primary {
+      background: var(--accent);
+      color: #021016;
+      border-color:transparent;
+      box-shadow: 0 6px 18px rgba(126,232,250,0.12);
+    }
+
+    .panel {
+      background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+      border: 1px solid var(--panel-border);
+      border-radius: 16px;
+      padding:14px;
+      min-height:200px;
+      backdrop-filter: blur(6px);
+    }
+
+    .panel h3 { font-size:15px; margin-bottom:10px; }
+
+    .bundles-grid {
+      display:grid;
+      grid-template-columns: repeat(2,1fr);
+      gap:12px;
+    }
+
+    .bundle {
+      background: rgba(255,255,255,0.02);
+      border-radius:12px;
+      padding:10px;
+      display:flex;
+      gap:10px;
+      align-items:center;
+      border: 1px solid rgba(255,255,255,0.03);
+      min-height:84px;
+    }
+
+    .bundle img {
+      width:64px;
+      height:64px;
+      border-radius:10px;
+      object-fit:cover;
+      background:linear-gradient(180deg,#0f2536,#06101a);
+      border:1px solid rgba(255,255,255,0.04);
+    }
+
+    .bundle .meta .name { font-weight:700; font-size:13px; margin-bottom:4px;}
+    .bundle .meta .desc { font-size:12px; opacity:0.85; color:#dff6ff; }
+
+    .locker {
+      margin-top:8px;
+      display:flex;
+      gap:8px;
+      overflow-x:auto;
+      padding-bottom:6px;
+    }
+
+    .locker .card {
+      min-width:140px;
+      border-radius:10px;
+      padding:8px;
+      background: rgba(255,255,255,0.02);
+      border:1px solid rgba(255,255,255,0.03);
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+      align-items:center;
+      cursor:pointer;
+      transition: transform .15s ease;
+      text-decoration:none;
+      color:inherit;
+    }
+
+    .locker .card:hover {
+      transform: translateY(-3px);
+    }
+
+    .card .img {
+      width:100px;
+      height:72px;
+      border-radius:8px;
+      background:linear-gradient(180deg,#071b2b,#04101a);
+      border: 1px solid rgba(255,255,255,0.03);
+      object-fit:cover;
+    }
+
+    .card .title { font-size:13px; font-weight:700; text-align:center; }
+
+    footer {
+      margin-top:18px;
+      text-align:center;
+      color:#bfeeff;
+      opacity:0.7;
+      font-size:13px;
+    }
+
+    @media (max-width:960px){
+      .main{ grid-template-columns: 1fr; }
+      .bundles-grid{ grid-template-columns: repeat(2,1fr); }
+      .wrap{ padding:16px }
+    }
+  </style>
+</head>
+<body>
+
+<canvas id="snow"></canvas>
+
+<div class="wrap">
+
+  <header>
+    <div class="logo">OG</div>
+    <div class="title">
+      <h1 contenteditable="true">OG Fortnite — Chapter 2 Season 2</h1>
+      <div class="sub" contenteditable="true">Original Project • Recreated pages</div>
+    </div>
+  </header>
+
+  <div class="main">
+
+    <div class="info">
+      <div class="section">
+        <h2>About the Project</h2>
+        <p contenteditable="true">This is a short description of Project Phantom</p>
+      </div>
+
+      <div class="section">
+  <h2>Important Links</h2>
+  <div class="actions">
+    <a class="btn" href="https://discord.gg/BNQtg65k" target="_blank">🔗 Discord</a>
+    <a class="btn primary" href="https://www.youtube.com/channel/UCCNPZFSbAQe6ntzcWSmZ_iA" target="_blank">▶ YouTube Channel</a>
+
+    <!-- NEW DOWNLOAD LINK -->
+    <a class="btn" href="https://safia-isthegoat.github.io/po/" target="_blank">📥 Download</a>
+  </div>
+</div>
+
+
+      <div class="section">
+        <h2>Server Status / Quick Info</h2>
+        <p contenteditable="true">Server online • You can play!...</p>
+      </div>
+
+      <div class="section">
+        <h2>How to Join</h2>
+        <p contenteditable="true">
+          Steps to join <br>
+          First Join our Discord server!<br>
+          Make an account<br>
+          Download The launcher and 12.41 build with custom content and play!
+        </p>
+
+        <p style="margin-top:10px;">
+          <a href="https://www.fortnite.com/news/lock-in-your-chapter-2-season-2-fortnite-agency-and-maya-choices"
+             target="_blank"
+             style="color:#80ffea; text-decoration:underline;">
+             Fortnite Chapter 2 Season 2 Official Article
+          </a>
+        </p>
+
+        <p contenteditable="true" style="margin-top:6px;">
+          Chapter 2 Season 2 introduced the secret agent theme with The Agency,
+          Ghost vs Shadow operatives, vaults guarded by bosses, mythic weapons,
+          the customizable Maya outfit, and some of the most iconic POIs ever added.
+        </p>
+      </div>
+
+    </div>
+
+    <!-- RIGHT SIDE — BUNDLES -->
+    <aside class="panel">
+      <h3>Featured Bundles</h3>
+
+      <div class="bundles-grid">
+
+        <div class="bundle">
+          <img src="https://tse3.mm.bing.net/th/id/OIP.ViX5kIX7m1HmUDjP3_msrQHaHa?rs=1&pid=ImgDetMain&o=7&rm=3"/>
+          <div class="meta">
+            <div class="name" contenteditable="true">Viro's Ultimate Bundle</div>
+            <div class="desc" contenteditable="true">Includes 25 skins of your choice</div>
+          </div>
+        </div>
+
+        <div class="bundle">
+          <img src="https://i.ytimg.com/vi/e-8gaVMjHaA/maxresdefault.jpg"/>
+          <div class="meta">
+            <div class="name" contenteditable="true">Locker Bundle</div>
+            <div class="desc" contenteditable="true">Edit details here</div>
+          </div>
+        </div>
+
+        <div class="bundle">
+          <img src="https://tse4.mm.bing.net/th/id/OIP.NWy0BqDpi-Xiz6P5YLZ0ZAHaHa?rs=1&pid=ImgDetMain&o=7&rm=3"/>
+          <div class="meta">
+            <div class="name" contenteditable="true">Safia's Emote Pack</div>
+            <div class="desc" contenteditable="true">Comes with 100 emotes!</div>
+          </div>
+        </div>
+
+        <div class="bundle">
+          <img src="https://assetsio.gnwcdn.com/fortnite_wraps.jpg?width=690&quality=75&format=jpg&dpr=2&auto=webp"/>
+          <div class="meta">
+            <div class="name" contenteditable="true">Wrap Collection</div>
+            <div class="desc" contenteditable="true">Add rarity & tags</div>
+          </div>
+        </div>
+
+      </div>
+
+      <h3 style="margin-top:12px">Gamemode Select</h3>
+
+      <!-- UPDATED: CLICKABLE GAMEMODE CARDS -->
+      <div class="locker">
+
+        <a class="card" href="late-game.html" style="text-decoration:none; color:inherit;">
+          <img class="img" src="https://images.immediate.co.uk/production/volatile/sites/3/2024/04/radio-times-billie-eilish-fortnite-03e784f.jpg?text=Late+Game" />
+          <div class="title">Billie's Late Game</div>
+        </a>
+
+        <a class="card" href="scrims.html" style="text-decoration:none; color:inherit;">
+          <img class="img" src="https://www.theloadout.com/wp-content/sites/theloadout/2023/04/fortnite-serenade-skin-chapter-4-season-3-theme.jpg?text=Scrims" />
+          <div class="title">Serenade's Scrims</div>
+        </a>
+
+        <a class="card" href="100-bots.html" style="text-decoration:none; color:inherit;">
+          <img class="img" src="https://cdn2.unrealengine.com/Fortnite/blog/fortnite-chapter-2-season-2-extended-until-early-june-2020/12BR_SolidGold_NewsHeader-1920x1080-f0c7b64ccb7a820bb32f9b67b1e6f757d31ce5f3.jpg?text=100+Bots" />
+          <div class="title">100 Bots Solo's</div>
+        </a>
+
+        <a class="card" href="coming-soon.html" style="text-decoration:none; color:inherit;">
+          <img class="img" src="https://via.placeholder.com/200x140.png?text=Coming+Soon" />
+          <div class="title">Coming Soon</div>
+        </a>
+
+      </div>
+
+    </aside>
+  </div>
+
+  <footer>
+    <div contenteditable="true">© Project Phantom — Chapter 2 Season 2. Since 2025.</div>
+  </footer>
+
+</div>
+
+<script>
+  const canvas = document.getElementById('snow');
+  const ctx = canvas.getContext('2d');
+  let w = canvas.width = innerWidth;
+  let h = canvas.height = innerHeight;
+  const flakes = [];
+
+  const FLAKE_COUNT = Math.min(200, Math.floor((innerWidth * innerHeight) / 20000));
+
+  function rand(min, max){ return Math.random()*(max-min)+min; }
+
+  function createFlakes(){
+    flakes.length = 0;
+    for(let i=0;i<FLAKE_COUNT;i++){
+      flakes.push({
+        x: rand(0, w),
+        y: rand(0, h),
+        r: rand(0.8, 4.2),
+        d: rand(0.5, 2.0),
+        sway: rand(0.5, 2.5),
+        swayPhase: rand(0, Math.PI*2)
+      });
+    }
+  }
+
+  function resize(){
+    w = canvas.width = innerWidth;
+    h = canvas.height = innerHeight;
+    createFlakes();
+  }
+  addEventListener('resize', resize);
+
+  let last = performance.now();
+  function loop(t){
+    const dt = Math.min(34, t - last);
+    last = t;
+
+    ctx.clearRect(0,0,w,h);
+
+    for(let f of flakes){
+      f.swayPhase += 0.002 * f.sway * dt;
+      f.y += f.d * (dt * 0.06) + (f.r * 0.02);
+      f.x += Math.sin(f.swayPhase) * 0.3 * f.sway;
+
+      ctx.beginPath();
+      const g = ctx.createRadialGradient(f.x, f.y, 0, f.x, f.y, f.r*3);
+      g.addColorStop(0, 'rgba(255,255,255,0.95)');
+      g.addColorStop(0.6, 'rgba(255,255,255,0.65)');
+      g.addColorStop(1, 'rgba(255,255,255,0)');
+      ctx.fillStyle = g;
+      ctx.arc(f.x, f.y, f.r*1.6, 0, Math.PI*2);
+      ctx.fill();
+
+      if(f.y > h + 10 || f.x < -20 || f.x > w + 20){
+        f.x = rand(0, w);
+        f.y = -10 - rand(0, h*0.1);
+      }
+    }
+
+    requestAnimationFrame(loop);
+  }
+
+  resize();
+  requestAnimationFrame(loop);
+</script>
+
+</body>
+</html>
